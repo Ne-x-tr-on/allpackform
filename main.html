@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre and Post Maintenance Tools and Area Checklist</title>
+    <!-- Include html2pdf library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        /* CSS Styling */
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .container {
+            width: 210mm; /* A4 width */
+            min-height: 297mm; /* A4 height */
+            background-color: white;
+            padding: 15mm;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .form-section {
+            margin-bottom: 20px;
+        }
+        
+        .form-section h2 {
+            background-color: #e0e0e0;
+            padding: 8px;
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            border: 1px solid #ccc;
+        }
+        
+        .form-row {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        
+        .form-row label {
+            width: 200px;
+            font-weight: bold;
+        }
+        
+        input[type="text"], input[type="date"], input[type="time"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        
+        .maintenance-type {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .maintenance-type label {
+            width: auto;
+            font-weight: normal;
+        }
+        
+        .checklist {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        
+        .checklist th, .checklist td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .checklist th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .checklist-item-text {
+            flex: 1;
+        }
+        
+        .check-options {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .check-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .tool-log {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        
+        .tool-log th, .tool-log td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        .tool-log th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        
+        .tool-log input {
+            width: 100%;
+            border: none;
+            text-align: center;
+            padding: 5px;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                margin: 0;
+            }
+            
+            button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="checklist-form">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Pre and Post Maintenance Tools and Area Checklist</h1>
+        </div>
+        
+        <!-- Date and Maintenance Type Section -->
+        <div class="form-section">
+            <div class="form-row">
+                <label for="date">Date:</label>
+                <input type="date" id="date">
+            </div>
+            <div class="form-row">
+                <label for="time">Time:</label>
+                <input type="time" id="time">
+            </div>
+            <div class="form-row">
+                <label>Maintenance Type:</label>
+                <div class="maintenance-type">
+                    <label><input type="checkbox" id="general"> General</label>
+                    <label><input type="checkbox" id="breakdown"> Breakdown</label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pre-Maintenance Checks Section -->
+        <div class="form-section">
+            <h2>Pre-Maintenance Checks</h2>
+            <table class="checklist">
+                <thead>
+                    <tr>
+                        <th style="width: 70%">Check Item</th>
+                        <th style="width: 10%">Yes</th>
+                        <th style="width: 10%">No</th>
+                        <th style="width: 10%">N/A</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Area around the machine is clean and clear</td>
+                        <td><input type="checkbox" class="pre-check" data-item="1" value="yes"></td>
+                        <td><input type="checkbox" class="pre-check" data-item="1" value="no"></td>
+                        <td><input type="checkbox" class="pre-check" data-item="1" value="na"></td>
+                    </tr>
+                    <tr>
+                        <td>Machine is properly isolated (LOTO)</td>
+                        <td><input type="checkbox" class="pre-check" data-item="2" value="yes"></td>
+                        <td><input type="checkbox" class="pre-check" data-item="2" value="no"></td>
+                        <td><input type="checkbox" class="pre-check" data-item="2" value="na"></td>
+                    </tr>
+                    <tr>
+                        <td>Required tools are available and in good condition</td>
+                        <td><input type="checkbox" class="pre-check" data-item="3" value="yes"></td>
+                        <td><input type="checkbox" class="pre-check" data-item="3" value="no"></td>
+                        <td><input type="checkbox" class="pre-check" data-item="3" value="na"></td>
+                    </tr>
+                    <tr>
+                        <td>Required spare parts are available</td>
+                        <td><input type="checkbox" class="pre-check" data-item="4" value="yes"></td>
+                        <td><input type="checkbox" class="pre-check" data-item="4" value="no"></td>
+                        <td><input type="checkbox" class="pre-check" data-item="4" value="na"></td>
+                    </tr>
+                    <tr>
+                        <td>Safety equipment is available and in good condition</td>
+                        <td><input type="checkbox" class="pre-check" data-item="5" value="yes"></td>
+                        <td><input type="checkbox" class="pre-check" data-item="5" value="no"></td>
+                        <td><input type="checkbox" class="pre-check" data-item="5" value="na"></td>
+                    </tr>
+                    <tr>
+                        <td>Work permit is available and duly signed</td>
+                        <td><input type="checkbox" class="pre-check" data-item="6" value="yes"></td>
+                        <td><input type="checkbox" class="pre-check" data-item="6" value="no"></td>
+                        <td><input type="checkbox" class="pre-check" data-item="6" value="na"></td>
+                    </tr>
+                    <tr>
+                        <td>Risk assessment is done and understood</td>
+                        <td><input type="checkbox" class="pre-check" data-item="7" value="yes"></td>
+                        <td><input type="checkbox" class="pre-check" data-item="7" value="no"></td>
+                        <td><input type="checkbox" class="pre-check" data-item="7" value="na"></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="form-row">
+                <label for="technician-pre">Technician Name:</label>
+                <input type="text" id="technician-pre">
+            </div>
+            <div class="form-row">
+                <label for="supervisor-pre">Supervisor Name:</label>
+                <input type="text" id="supervisor-pre">
+            </div>
+        </div>
+        
+        <!-- Tool Log Section -->
+        <div class="form-section">
+            <h2>Tool Log</h2>
+            <table class="tool-log">
+                <thead>
+                    <tr>
+                        <th style="width: 40%">Type of Tool</th>
+                        <th style="width: 30%">Before maintenance</th>
+                        <th style="width: 30%">After maintenance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Spanners</td>
+                        <td><input type="text" id="spanners-before"></td>
+                        <td><input type="text" id="spanners-after"></td>
+                    </tr>
+                    <tr>
+                        <td>Torque Gauges</td>
+                        <td><input type="text" id="torque-gauges-before"></td>
+                        <td><input type="text" id="torque-gauges-after"></td>
+                    </tr>
+                    <tr>
+                        <td>Files</td>
+                        <td><input type="text" id="files-before"></td>
+                        <td><input type="text" id="files-after"></td>
+                    </tr>
+                    <tr>
+                        <td>Pliers</td>
+                        <td><input type="text" id="pliers-before"></td>
+                        <td><input type="text" id="pliers-after"></td>
+                    </tr>
+                    <tr>
+                        <td>Hex Key Sets</td>
+                        <td><input type="text" id="hex-keys-before"></td>
+                        <td><input type="text" id="hex-keys-after"></td>
+                    </tr>
+                    <tr>
+                        <td>Scrapers</td>
+                        <td><input type="text" id="scrapers-before"></td>
+                        <td><input type="text" id="scrapers-after"></td>
+                    </tr>
+                    <tr>
+                        <td>Chisels</td>
+                        <td><input type="text" id="chisels-before"></td>
+                        <td><input type="text" id="chisels-after"></td>
+                    </tr>
+                    <tr>
+                        <td>Adjustable Wrenches</td>
+                        <td><input type="text" id="wrenches-before"></td>
+                        <td><input type="text" id="wrenches-after"></td>
+                    </tr>
+                    <tr>
+                        <td>Punches</td>
+                        <td><input type="text" id="punches-before"></td>
+                        <td><input type="text" id="punches-after"></td>
+                    </tr>
+                    <tr>
+                        <td>Hammers</td>
+                        <td><input type="text" id="hammers-before"></td>
+                        <td><input type="text" id="hammers-after"></td>
+                    </tr>
+                    <tr>
+                        <td>Ratchet Wrenches</td>
+                        <td><input type="text" id="ratchet-before"></td>
+                        <td><input type="text" id="ratchet-after"></td>
+                    </tr>
+                    <tr>
+                        <td>Screwdrivers</td>
+                        <td><input type="text" id="screwdrivers-before"></td>
+                        <td><input type="text" id="screwdrivers-after"></td>
+                    </tr>
+                    <tr>
+                        <td>Special/Other Tools (if any)</td>
+                        <td><input type="text" id="special-before"></td>
+                        <td><input type="text" id="special-after"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Post-Maintenance Checks Section -->
+        <div class="form-section">
+            <h2>Post-Maintenance Checks</h2>
+            <table class="checklist">
+                <thead>
+                    <tr>
+                        <th style="width: 70%">Check Item</th>
+                        <th style="width: 10%">Yes</th>
+                        <th style="width: 10%">No</th>
+                        <th style="width: 10%">N/A</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>All tools are accounted for and stored properly</td>
+                        <td><input type="checkbox" class="post-check" data-item="1" value="yes"></td>
+                        <td><input type="checkbox" class="post-check" data-item="1" value="no"></td>
+                        <td><input type="checkbox" class="post-check" data-item="1" value="na"></td>
+                    </tr>
+                    <tr>
+                        <td>Work area is clean and tidy</td>
+                        <td><input type="checkbox" class="post-check" data-item="2" value="yes"></td>
+                        <td><input type="checkbox" class="post-check" data-item="2" value="no"></td>
+                        <td><input type="checkbox" class="post-check" data-item="2" value="na"></td>
+                    </tr>
+                    <tr>
+                        <td>All safety guards are reinstalled</td>
+                        <td><input type="checkbox" class="post-check" data-item="3" value="yes"></td>
+                        <td><input type="checkbox" class="post-check" data-item="3" value="no"></td>
+                        <td><input type="checkbox" class="post-check" data-item="3" value="na"></td>
+                    </tr>
+                    <tr>
+                        <td>Machine is ready for operation</td>
+                        <td><input type="checkbox" class="post-check" data-item="4" value="yes"></td>
+                        <td><input type="checkbox" class="post-check" data-item="4" value="no"></td>
+                        <td><input type="checkbox" class="post-check" data-item="4" value="na"></td>
+                    </tr>
+                    <tr>
+                        <td>Maintenance documentation is completed</td>
+                        <td><input type="checkbox" class="post-check" data-item="5" value="yes"></td>
+                        <td><input type="checkbox" class="post-check" data-item="5" value="no"></td>
+                        <td><input type="checkbox" class="post-check" data-item="5" value="na"></td>
+                    </tr>
+                    <tr>
+                        <td>Handover to production is completed</td>
+                        <td><input type="checkbox" class="post-check" data-item="6" value="yes"></td>
+                        <td><input type="checkbox" class="post-check" data-item="6" value="no"></td>
+                        <td><input type="checkbox" class="post-check" data-item="6" value="na"></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="form-row">
+                <label for="technician-post">Technician Name:</label>
+                <input type="text" id="technician-post">
+            </div>
+            <div class="form-row">
+                <label for="supervisor-post">Supervisor Name:</label>
+                <input type="text" id="supervisor-post">
+            </div>
+        </div>
+        
+        <!-- Generate PDF Button -->
+        <div class="button-container">
+            <button id="generate-pdf">Generate PDF Report</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for interactivity and PDF generation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date and time
+            const now = new Date();
+            document.getElementById('date').valueAsDate = now;
+            
+            // Format time to HH:MM
+            const timeString = now.toTimeString().substring(0, 5);
+            document.getElementById('time').value = timeString;
+            
+            // Ensure only one checkbox is selected per row in checklists
+            const preCheckboxes = document.querySelectorAll('.pre-check');
+            const postCheckboxes = document.querySelectorAll('.post-check');
+            
+            function handleCheckboxGroup(checkbox) {
+                const group = checkbox.getAttribute('data-item');
+                const value = checkbox.getAttribute('value');
+                const checkboxesInGroup = document.querySelectorAll(`[data-item="${group}"]`);
+                
+                checkboxesInGroup.forEach(cb => {
+                    if (cb !== checkbox) {
+                        cb.checked = false;
+                    }
+                });
+            }
+            
+            preCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        handleCheckboxGroup(this);
+                    }
+                });
+            });
+            
+            postCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        handleCheckboxGroup(this);
+                    }
+                });
+            });
+            
+            // Maintenance type checkboxes - allow only one selection
+            const maintenanceTypeCheckboxes = document.querySelectorAll('input[type="checkbox"][id="general"], input[type="checkbox"][id="breakdown"]');
+            
+            maintenanceTypeCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        maintenanceTypeCheckboxes.forEach(cb => {
+                            if (cb !== this) {
+                                cb.checked = false;
+                            }
+                        });
+                    }
+                });
+            });
+            
+            // PDF Generation
+            document.getElementById('generate-pdf').addEventListener('click', function() {
+                const element = document.getElementById('checklist-form');
+                const opt = {
+                    margin: 10,
+                    filename: 'maintenance_checklist.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                
+                html2pdf().set(opt).from(element).save();
+            });
+        });
+    </script>
+</body>
+</html>
